@@ -1,0 +1,79 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Python virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Flask
+instance/
+.webassets-cache/
+
+# Environment and secret files
+.env
+.env.*
+*.pem
+*.key
+credentials*.json
+secrets*.json
+
+# SQLite local database data
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.sqlite-journal
+*.db-shm
+*.db-wal
+*.sqlite-shm
+*.sqlite-wal
+
+# Keep database schemas, scripts, migrations, and safe sample data
+!Database/
+!**/*schema*.sql
+!**/*migration*.sql
+!**/*migrations*.sql
+!**/*seed*.sql
+!**/*sample*.sql
+!**/*sample*.db
+!**/*example*.db
+!**/*sample*.sqlite
+!**/*example*.sqlite
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm/
+.pnpm-store/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.history/
+
+# Operating system and temporary files
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+*.log
+*.cache/
+.cache/
+tmp/
+temp/
