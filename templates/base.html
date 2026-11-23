@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Inventory{% endblock %} · Inventory &amp; Stock</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+{% if g.user %}
+<header class="topbar">
+  <a class="brand" href="{{ url_for('main.dashboard') }}">Inventory &amp; Stock</a>
+  <nav>
+    <a href="{{ url_for('main.dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('catalog.products') }}">Products</a>
+    <a href="{{ url_for('catalog.suppliers') }}">Suppliers</a>
+    <a href="{{ url_for('inventory.movements') }}">Stock</a>
+    <a href="{{ url_for('sales.sales_list') }}">Sales</a>
+  </nav>
+  <form method="post" action="{{ url_for('auth.logout') }}" class="logout">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <span>{{ g.user['full_name'] or g.user['username'] }} ({{ g.user['role'] }})</span>
+    <button type="submit" class="btn small secondary">Log out</button>
+  </form>
+</header>
+{% endif %}
+<main class="container">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+      <div class="flash {{ category }}" role="alert">{{ message }}</div>
+    {% endfor %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

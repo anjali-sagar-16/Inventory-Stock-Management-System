@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Stock movements{% endblock %}
+{% block content %}
+<div class="row"><h1>Stock movements</h1><a class="btn" href="{{ url_for('inventory.movement_new') }}">+ Stock-In / Stock-Out</a></div>
+<table>
+  <thead><tr><th>Date (UTC)</th><th>Product</th><th>Type</th><th class="num">Qty</th><th>User</th><th>Notes</th></tr></thead>
+  <tbody>
+  {% for m in movements %}
+  <tr><td>{{ m['movement_date'] }}</td><td>{{ m['product_name'] }}</td>
+    <td><span class="badge {{ 'in' if m['movement_type']=='IN' else 'out' }}">{{ m['movement_type'] }}</span></td>
+    <td class="num">{{ m['quantity'] }}</td><td>{{ m['username'] }}</td><td>{{ m['notes'] or '' }}</td></tr>
+  {% else %}<tr><td colspan="6" class="muted">No movements recorded.</td></tr>{% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}{{ s['supplier_name'] }}{% endblock %}
+{% block content %}
+<div class="row"><h1>{{ s['supplier_name'] }}</h1>
+<a class="btn secondary" href="{{ url_for('catalog.supplier_edit', supplier_id=s['supplier_id']) }}">Edit</a></div>
+<section class="card"><dl>
+  <dt>Phone</dt><dd>{{ s['phone'] or '—' }}</dd><dt>Email</dt><dd>{{ s['email'] or '—' }}</dd>
+  <dt>Address</dt><dd>{{ s['address'] or '—' }}</dd></dl></section>
+<h2>Products supplied</h2>
+<table><thead><tr><th>Product</th><th class="num">Qty</th></tr></thead><tbody>
+{% for p in products %}<tr><td><a href="{{ url_for('catalog.product_view', product_id=p['product_id']) }}">{{ p['product_name'] }}</a></td><td class="num">{{ p['quantity'] }}</td></tr>
+{% else %}<tr><td colspan="2" class="muted">No products linked.</td></tr>{% endfor %}</tbody></table>
+{% endblock %}

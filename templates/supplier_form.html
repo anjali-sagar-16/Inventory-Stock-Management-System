@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if editing else 'New' }} supplier{% endblock %}
+{% block content %}
+<section class="card narrow">
+<h1>{{ 'Edit' if editing else 'New' }} supplier</h1>
+<form method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Name * <input name="supplier_name" required maxlength="200" value="{{ supplier['supplier_name'] if supplier else '' }}"></label>
+  <label>Phone <input name="phone" value="{{ supplier['phone'] or '' if supplier else '' }}"></label>
+  <label>Email <input name="email" type="email" value="{{ supplier['email'] or '' if supplier else '' }}"></label>
+  <label>Address <textarea name="address" rows="2">{{ supplier['address'] or '' if supplier else '' }}</textarea></label>
+  <button class="btn" type="submit">Save</button> <a class="btn secondary" href="{{ url_for('catalog.suppliers') }}">Cancel</a>
+</form></section>
+{% endblock %}

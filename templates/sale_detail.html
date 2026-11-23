@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Sale #{{ sale['sale_id'] }}{% endblock %}
+{% block content %}
+<div class="row"><h1>Sale #{{ sale['sale_id'] }}</h1><button class="btn secondary" onclick="window.print()">Print receipt</button></div>
+<p class="muted">{{ sale['sale_date'] }} UTC · recorded by {{ sale['username'] }}</p>
+<table>
+  <thead><tr><th>Product</th><th class="num">Qty</th><th class="num">Unit price</th><th class="num">Line total</th></tr></thead>
+  <tbody>
+  {% for i in items %}<tr><td>{{ i['product_name'] }}</td><td class="num">{{ i['quantity'] }}</td>
+    <td class="num">{{ '%.2f'|format(i['unit_price']) }}</td><td class="num">{{ '%.2f'|format(i['line_total']) }}</td></tr>{% endfor %}
+  </tbody>
+  <tfoot><tr><th colspan="3" class="num">Total</th><th class="num">{{ '%.2f'|format(sale['total_amount']) }}</th></tr></tfoot>
+</table>
+<p><a class="btn secondary" href="{{ url_for('sales.sales_list') }}">Back to sales</a></p>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Dashboard</h1>
+<div class="stats">
+  <div class="stat c-blue"><i>📦</i><span>{{ stats['products'] }}</span>Products</div>
+  <div class="stat c-purple"><i>🚚</i><span>{{ stats['suppliers'] }}</span>Suppliers</div>
+  <div class="stat c-green"><i>🧮</i><span>{{ stats['units'] }}</span>Total units</div>
+  <div class="stat {{ 'c-red' if low else 'c-teal' }}"><i>⚠️</i><span>{{ low|length }}</span>Low-stock products</div>
+</div>
+<div class="grid2">
+  <section class="card accent-red">
+    <h2>Low-stock products</h2>
+    {% if low %}
+    <table><thead><tr><th>Product</th><th class="num">Qty</th><th class="num">Reorder level</th></tr></thead><tbody>
+    {% for p in low %}
+      <tr><td><a href="{{ url_for('catalog.product_view', product_id=p['product_id']) }}">{{ p['product_name'] }}</a></td>
+          <td class="num"><span class="badge warn">{{ p['quantity'] }}</span></td><td class="num">{{ p['reorder_level'] }}</td></tr>
+    {% endfor %}</tbody></table>
+    {% else %}<p class="muted">No products are at or below their reorder level.</p>{% endif %}
+  </section>
+  <section class="card accent-blue">
+    <h2>Recent sales</h2>
+    {% if recent %}
+    <table><thead><tr><th>Sale</th><th>Date (UTC)</th><th>By</th><th class="num">Total</th></tr></thead><tbody>
+    {% for s in recent %}
+      <tr><td><a href="{{ url_for('sales.sale_detail', sale_id=s['sale_id']) }}">#{{ s['sale_id'] }}</a></td>
+          <td>{{ s['sale_date'] }}</td><td>{{ s['username'] }}</td><td class="num">{{ '%.2f'|format(s['total_amount']) }}</td></tr>
+    {% endfor %}</tbody></table>
+    {% else %}<p class="muted">No sales yet.</p>{% endif %}
+  </section>
+</div>
+<section class="card accent-green">
+  <h2>Stock health <small class="muted">(full bar = 3× reorder level; lowest first)</small></h2>
+  {% for p in levels %}
+    {% set ratio = p['quantity'] / (p['reorder_level'] if p['reorder_level'] > 0 else 1) %}
+    {% set pct = [ (ratio / 3 * 100)|round|int, 100 ]|min %}
+    <div class="bar-row">
+      <span class="bar-label">{{ p['product_name'] }}</span>
+      <div class="bar"><div class="fill {{ 'bad' if p['quantity'] <= p['reorder_level'] else ('mid' if ratio < 2 else 'good') }}" style="width: {{ pct }}%"></div></div>
+      <span class="bar-val">{{ p['quantity'] }}</span>
+    </div>
+  {% else %}<p class="muted">No products yet.</p>{% endfor %}
+</section>
+{% endblock %}

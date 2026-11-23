@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Record stock movement{% endblock %}
+{% block content %}
+<section class="card narrow">
+<h1>Record stock movement</h1>
+<form method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Product *
+    <select name="product_id" required><option value="">— select —</option>
+    {% for p in products %}<option value="{{ p['product_id'] }}" {% if form.get('product_id')|string == p['product_id']|string %}selected{% endif %}>{{ p['product_name'] }} (in stock: {{ p['quantity'] }})</option>{% endfor %}
+    </select></label>
+  <label>Type *
+    <select name="movement_type" required>
+      <option value="IN" {% if form.get('movement_type') != 'OUT' %}selected{% endif %}>Stock-In (add)</option>
+      <option value="OUT" {% if form.get('movement_type') == 'OUT' %}selected{% endif %}>Stock-Out (remove)</option>
+    </select></label>
+  <label>Quantity * <input name="quantity" type="number" min="1" step="1" required value="{{ form.get('quantity', '') }}"></label>
+  <label>Notes <textarea name="notes" rows="2" maxlength="500">{{ form.get('notes', '') }}</textarea></label>
+  <button class="btn" type="submit">Record</button> <a class="btn secondary" href="{{ url_for('inventory.movements') }}">Cancel</a>
+</form></section>
+{% endblock %}

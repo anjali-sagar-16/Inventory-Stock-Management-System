@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Sales{% endblock %}
+{% block content %}
+<div class="row"><h1>Sales</h1><a class="btn" href="{{ url_for('sales.sale_new') }}">+ New sale</a></div>
+<table>
+  <thead><tr><th>Sale</th><th>Date (UTC)</th><th>By</th><th class="num">Items</th><th class="num">Total</th></tr></thead>
+  <tbody>
+  {% for s in sales %}
+  <tr><td><a href="{{ url_for('sales.sale_detail', sale_id=s['sale_id']) }}">#{{ s['sale_id'] }}</a></td><td>{{ s['sale_date'] }}</td>
+    <td>{{ s['username'] }}</td><td class="num">{{ s['item_count'] }}</td><td class="num">{{ '%.2f'|format(s['total_amount']) }}</td></tr>
+  {% else %}<tr><td colspan="5" class="muted">No sales yet.</td></tr>{% endfor %}
+  </tbody>
+</table>
+{% endblock %}

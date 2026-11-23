@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}{{ p['product_name'] }}{% endblock %}
+{% block content %}
+<div class="row"><h1>{{ p['product_name'] }}</h1>
+<a class="btn secondary" href="{{ url_for('catalog.product_edit', product_id=p['product_id']) }}">Edit</a></div>
+<section class="card">
+<dl>
+  <dt>Code</dt><dd>{{ p['product_code'] or '—' }}</dd>
+  <dt>Description</dt><dd>{{ p['description'] or '—' }}</dd>
+  <dt>Unit price</dt><dd>{{ '%.2f'|format(p['unit_price']) if p['unit_price'] is not none else '—' }}</dd>
+  <dt>Quantity</dt><dd>{{ p['quantity'] }}{% if p['quantity'] <= p['reorder_level'] %} <span class="badge warn">Low stock</span>{% endif %}</dd>
+  <dt>Reorder level</dt><dd>{{ p['reorder_level'] }}</dd>
+  <dt>Supplier</dt><dd>{{ p['supplier_name'] or '—' }}</dd>
+</dl></section>
+<h2>Recent movements</h2>
+<table><thead><tr><th>Date (UTC)</th><th>Type</th><th class="num">Qty</th><th>User</th><th>Notes</th></tr></thead><tbody>
+{% for m in moves %}<tr><td>{{ m['movement_date'] }}</td><td><span class="badge {{ 'in' if m['movement_type']=='IN' else 'out' }}">{{ m['movement_type'] }}</span></td>
+<td class="num">{{ m['quantity'] }}</td><td>{{ m['username'] }}</td><td>{{ m['notes'] or '' }}</td></tr>
+{% else %}<tr><td colspan="5" class="muted">No movements yet.</td></tr>{% endfor %}</tbody></table>
+{% endblock %}
